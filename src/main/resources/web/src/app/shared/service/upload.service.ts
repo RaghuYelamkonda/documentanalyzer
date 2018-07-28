@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
 import { AlertService } from 'src/app/shared/service/alert.service';
 import { Alert } from 'src/app/shared/model/Alert';
+import { AuthenticationService } from 'src/app/shared/service/authentication.service';
 
 const url = '/api/v1/fileuploaddownloader/uploadFile';
 
 @Injectable()
 export class UploadService {
   constructor(private http: HttpClient,
-    private alertService: AlertService) {}
+    private alertService: AlertService, private authenticationService: AuthenticationService) { }
 
-public upload(files: Set<File>): {[key:string]:Observable<number>} {
+  public upload(files: Set<File>): { [key: string]: Observable<number> } {
     // this will be the our resulting map
     const status = {};
 
@@ -20,14 +21,20 @@ public upload(files: Set<File>): {[key:string]:Observable<number>} {
       const formData: FormData = new FormData();
       formData.append('file', file, file.name);
 
+      let params = new HttpParams();
+      var userID = this.authenticationService.getLoggedInUser().id;
+      params = params.append('userID', userID);
+
+      var updatedUrl = url+'?userId='+userID;
       // create a http-post request and pass the form
       // tell it to report the upload progress
-      const req = new HttpRequest('POST', url, formData, {
+      const req = new HttpRequest('POST', updatedUrl, formData, {
         reportProgress: true
       });
 
       // create a new progress-subject for every file
       const progress = new Subject<number>();
+
 
       // send the http-request and subscribe for progress-updates
       this.http.request(req).subscribe(event => {

@@ -18,8 +18,8 @@ public class DocumentController {
     private DocumentsRepository repository;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<Document> getDocumentByName(@PathVariable("id") String id) {
-        return repository.findByuserId(id);
+    public List<Document> getDocumentByName(@PathVariable("id") String userId) {
+        return repository.findByuserId(userId);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -29,10 +29,10 @@ public class DocumentController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Document createDocument(@Valid @RequestBody Document Document) {
-        Document.setId(ObjectId.get().toHexString());
-        repository.save(Document);
-        return Document;
+    public Document createDocument(@Valid @RequestBody Document document) {
+        document.setId(ObjectId.get().toHexString());
+        repository.save(document);
+        return document;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
