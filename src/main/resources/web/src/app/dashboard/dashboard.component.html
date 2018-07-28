@@ -1,3 +1,9 @@
-<p>
-  dashboard works!
-</p>
+<div class="col-10 offset-1">
+  <app-alert></app-alert>
+  <div>
+    <input type="file" #file style="display: none" (change)="onFilesAdded()" multiple accept=".pdf"/>
+    <button class="btn btn-primary float-left" (click)="addFiles()">Upload Documents</button>
+    <button class="btn btn-primary float-right left-space" (click)="addFiles()">Export Data</button>
+    <button class="btn btn-primary float-right left-space" (click)="addFiles()">View Full Screen</button>
+  </div>
+</div>

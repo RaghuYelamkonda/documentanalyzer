@@ -1,19 +1,9 @@
-.header {
-    padding: 20px; /* some padding */
-    text-align: center; /* center the text */
-    background: #1abc9c; /* green background */
-    color: white; /* white text color */
-}
-
-/* Increase the font size of the <h1> element */
-.header h1 {
-    font-size: 40px;
-}
 
 /* Style the top navigation bar */
 .navbar {
     overflow: hidden; /* Hide overflow */
-    background-color: #333; /* Dark background color */
+    background-color: #611515; /* Dark background color */
+    color: #611515;
 }
 
 /* Style the navigation bar links */
@@ -33,6 +23,5 @@
 
 /* Change color on hover/mouse-over */
 .navbar a:hover {
-    background-color: #ddd; /* Grey background color */
-    color: black; /* Black text color */
+    background-color: #350909; /* Grey background color */
 }

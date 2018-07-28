@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UploadService } from '../shared/service/upload.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('file') file;
+  public files: Set<File> = new Set();
+
+  constructor(private fileUploadService: UploadService) { }
 
   ngOnInit() {
   }
 
+  addFiles() {
+    this.file.nativeElement.click();
+  }
+
+  onFilesAdded() {
+    const files: { [key: string]: File } = this.file.nativeElement.files;
+    for (let key in files) {
+      if (!isNaN(parseInt(key))) {
+        this.files.add(files[key]);
+      }
+    }
+    this.fileUploadService.upload(this.files);
+  }
 }

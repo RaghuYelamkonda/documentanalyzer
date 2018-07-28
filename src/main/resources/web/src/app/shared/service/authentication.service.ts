@@ -6,27 +6,27 @@ import { User } from 'src/app/shared/model/User';
 
 @Injectable()
 export class AuthenticationService {
-    user : User;
+    user: User;
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  login(username: string, password: string) {
-    return this.http.post<any>(`/documentanalyzer/api/v1/login/`, { "userName": username, "password": password })
-        .pipe(map(user => {
-            this.user = <User>user;
-            return user;
-        }));
-}
+    login(username: string, password: string) {
+        return this.http.post<any>(`/api/v1/login/`, { "userName": username, "password": password })
+            .pipe(map(user => {
+                this.user = <User>user;
+                return user;
+            }));
+    }
 
-getLoggedInUser() : User {
-    return this.user;
-  }
+    getLoggedInUser(): User {
+        return this.user;
+    }
 
-logout() {
-  return this.http.post<any>(`/documentanalyzer/api/v1/logout/`, {  })
-  .pipe(map(user => {
-      this.user = null;
-      return user;
-  }));
-}
+    logout() {
+        return this.http.post<any>(`/api/v1/logout/`, {})
+            .pipe(map(user => {
+                this.user = null;
+                return user;
+            }));
+    }
 }

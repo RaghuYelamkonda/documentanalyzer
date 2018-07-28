@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
+import { AlertService } from 'src/app/shared/service/alert.service';
+import { Alert } from 'src/app/shared/model/Alert';
 
-const url = '/documentanalyzer/api/v1/fileuploaddownloader/uploadFile';
+const url = '/api/v1/fileuploaddownloader/uploadFile';
 
 @Injectable()
 export class UploadService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private alertService: AlertService) {}
 
 public upload(files: Set<File>): {[key:string]:Observable<number>} {
     // this will be the our resulting map
@@ -37,6 +40,8 @@ public upload(files: Set<File>): {[key:string]:Observable<number>} {
           progress.next(percentDone);
         } else if (event instanceof HttpResponse) {
 
+          console.log("Adding success event");
+          this.alertService.addAlert(new Alert('success', this.alertService.getNextID(), "Document uploaded successfully"));
           // Close the progress-stream if we get an answer form the API
           // The upload is complete
           progress.complete();
@@ -48,7 +53,6 @@ public upload(files: Set<File>): {[key:string]:Observable<number>} {
         progress: progress.asObservable()
       };
     });
-
     // return the map of progress.observables
     return status;
   }
