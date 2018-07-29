@@ -3,6 +3,7 @@ export class Document {
     id: string;
     description: string;
     userId: string;
+    selected: boolean;
   
     constructor(name: string, id: string, description: string, userId: string) {
       this.name = name;

@@ -1,3 +1,40 @@
 .left-space {
     margin-left: 3px;
 }
+
+.upload-button-group {
+    height: 50px;
+}
+
+.document-table {
+    margin-top: 10px;
+    display: block;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border-color: #611515;
+}
+
+th {
+    background-color: #611515;
+    color: white
+}
+
+td, th {
+    border: 1px solid #611515;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.btn-guardx {
+    color: #fff;
+    background-color: #611515;
+    border-color: #411515;
+}

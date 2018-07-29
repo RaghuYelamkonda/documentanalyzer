@@ -19,7 +19,8 @@ public class DocumentController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public List<Document> getDocumentByName(@PathVariable("id") String userId) {
-        return repository.findByuserId(userId);
+        List<Document> byuserId = repository.findByuserId(userId);
+        return byuserId;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

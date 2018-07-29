@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UploadService } from '../shared/service/upload.service';
+import { DocumentsService } from 'src/app/shared/service/documents.service';
+import { Document } from 'src/app/shared/model/document';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,16 +10,34 @@ import { UploadService } from '../shared/service/upload.service';
 })
 export class DashboardComponent implements OnInit {
 
+  documents: Document[];
   @ViewChild('file') file;
   public files: Set<File> = new Set();
 
-  constructor(private fileUploadService: UploadService) { }
+  constructor(private fileUploadService: UploadService, private documentsService: DocumentsService) { }
 
   ngOnInit() {
+    this.documentsService.getDocuments().subscribe(
+      documents => this.documents = documents
+    );
+  }
+
+  getDocuments() {
+    return this.documents;
   }
 
   addFiles() {
     this.file.nativeElement.click();
+  }
+
+  exportData() {
+    for (let document of this.documents) {
+      console.log("Exporting");
+      if(document.selected) {
+        this.fileUploadService.download(document.id);
+      }
+    }
+
   }
 
   onFilesAdded() {

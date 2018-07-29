@@ -23,5 +23,11 @@
 
 /* Change color on hover/mouse-over */
 .navbar a:hover {
-    background-color: #350909; /* Grey background color */
+    background-color: #711515; /* Grey background color */
+}
+
+.btn-guardx {
+    color: #fff;
+    background-color: #611515;
+    border-color: #411515;
 }
