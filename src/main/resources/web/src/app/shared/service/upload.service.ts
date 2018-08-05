@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { saveAs } from 'file-saver/FileSaver';
 import { Subject, Observable } from 'rxjs';
 import { AlertService } from 'src/app/shared/service/alert.service';
 import { Alert } from 'src/app/shared/model/Alert';
 import { AuthenticationService } from 'src/app/shared/service/authentication.service';
 
-const url = '/api/v1/fileuploaddownloader/uploadFile';
+const fileServiceUrl = '/api/v1/fileuploaddownloader/';
+const uploadUrl = fileServiceUrl + 'uploadFile';
+const downloadUrl = fileServiceUrl + 'downloadFile';
 
 @Injectable()
 export class UploadService {
@@ -21,11 +24,8 @@ export class UploadService {
       const formData: FormData = new FormData();
       formData.append('file', file, file.name);
 
-      let params = new HttpParams();
       var userID = this.authenticationService.getLoggedInUser().id;
-      params = params.append('userID', userID);
-
-      var updatedUrl = url+'?userId='+userID;
+      var updatedUrl = uploadUrl + '?userId=' + userID;
       // create a http-post request and pass the form
       // tell it to report the upload progress
       const req = new HttpRequest('POST', updatedUrl, formData, {
@@ -64,8 +64,23 @@ export class UploadService {
     return status;
   }
 
-  download(id: String) {
-    console.log(id);
+  public download(name: String) {
+      return this.http.get<Blob>(downloadUrl + '/' + name, {responseType: 'blob' as 'json'})
+      .subscribe(event => {
+        if (event instanceof Blob) {
+          saveAs(event, name);       
+        }
+      });
 
+      //, {headers: {"accepts":"application/octet-stream"}
+
+      // return this.http.get<Blob>(downloadUrl + '/' + name, {responseType: 'blob' as 'json'})
+      // .subscribe(event => {
+      //   console.log(event);
+      //   console.log("Event is "+ event);
+      //   if (event instanceof Blob) {
+      //     saveAs(event,"test.pdf");       
+      //   }
+      // });
   }
 }

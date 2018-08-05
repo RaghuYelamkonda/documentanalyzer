@@ -32,9 +32,8 @@ export class DashboardComponent implements OnInit {
 
   exportData() {
     for (let document of this.documents) {
-      console.log("Exporting");
       if(document.selected) {
-        this.fileUploadService.download(document.id);
+        this.fileUploadService.download(document.name);
       }
     }
 

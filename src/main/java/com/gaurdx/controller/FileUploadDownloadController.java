@@ -20,6 +20,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,13 +44,18 @@ public class FileUploadDownloadController {
             return buildUnauthorisedResponse();
         }
         String fileName = null;
+        Path filePath = fileStorageService.getFilePath(file.getOriginalFilename());
+        boolean exists = Files.exists(filePath);
         fileName = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
-        Document document = new Document(ObjectId.get().toHexString(), fileName, "", userId);
-        documentsRepository.save(document);
+
+        if(!exists) {
+            Document document = new Document(ObjectId.get().toHexString(), fileName, "", userId);
+            documentsRepository.save(document);
+        }
         return new ResponseEntity<>(new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize()), HttpStatus.CREATED);
     }

@@ -19,7 +19,7 @@
         <tr *ngFor="let document of documents">
           <td><input [(ngModel)]="document.selected" type="checkbox"></td>
           <td>{{document.name}}</td>
-          <td>{{document.selected}}</td>
+          <td>{{document.description}}</td>
         </tr>
       </tbody>
     </table>
