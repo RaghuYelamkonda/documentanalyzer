@@ -5,6 +5,7 @@ import { Subject, Observable } from 'rxjs';
 import { AlertService } from 'src/app/shared/service/alert.service';
 import { Alert } from 'src/app/shared/model/Alert';
 import { AuthenticationService } from 'src/app/shared/service/authentication.service';
+import { DocumentsService } from 'src/app/shared/service/documents.service';
 
 const fileServiceUrl = '/api/v1/fileuploaddownloader/';
 const uploadUrl = fileServiceUrl + 'uploadFile';
@@ -13,7 +14,7 @@ const downloadUrl = fileServiceUrl + 'downloadFile';
 @Injectable()
 export class UploadService {
   constructor(private http: HttpClient,
-    private alertService: AlertService, private authenticationService: AuthenticationService) { }
+    private alertService: AlertService, private authenticationService: AuthenticationService, private documentsService: DocumentsService) { }
 
   public upload(files: Set<File>): { [key: string]: Observable<number> } {
     // this will be the our resulting map
@@ -52,6 +53,7 @@ export class UploadService {
           // Close the progress-stream if we get an answer form the API
           // The upload is complete
           progress.complete();
+          //this.documentsService.reloadDocuments();
         }
       });
 
