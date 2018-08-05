@@ -25,6 +25,16 @@
 DB setup is done
 -------------------------------------------
 
+For client
+
+1. Install node
+2. Run npm install from command prompt at src\main\resources\web
+3. npm start
+
+Open browser for url: http://localhost:4200/
+
+Note that client makes backend call using the url mentioned at src\main\resources\web\proxy.config.json. It is configured to call localhost
+    Url /api/* goes to http://localhost:8080/documentanalyzer/api/*
 
 Build the client application using ng build --base-href .
 Run the application as springbbot app
