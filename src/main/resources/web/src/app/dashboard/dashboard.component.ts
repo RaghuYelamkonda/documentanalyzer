@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
 
   documents: Document[];
   @ViewChild('file') file;
-  public files: Set<File> = new Set();
+  //public files: Set<File> = new Set();
 
   constructor(private fileUploadService: UploadService, private documentsService: DocumentsService) { }
 
@@ -40,12 +40,13 @@ export class DashboardComponent implements OnInit {
   }
 
   onFilesAdded() {
+    let fileList: Set<File> = new Set();
     const files: { [key: string]: File } = this.file.nativeElement.files;
     for (let key in files) {
       if (!isNaN(parseInt(key))) {
-        this.files.add(files[key]);
+        fileList.add(files[key]);
       }
     }
-    this.fileUploadService.upload(this.files);
+    this.fileUploadService.upload(fileList);
   }
 }

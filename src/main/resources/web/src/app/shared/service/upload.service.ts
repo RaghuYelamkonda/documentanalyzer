@@ -6,6 +6,7 @@ import { AlertService } from 'src/app/shared/service/alert.service';
 import { Alert } from 'src/app/shared/model/Alert';
 import { AuthenticationService } from 'src/app/shared/service/authentication.service';
 import { DocumentsService } from 'src/app/shared/service/documents.service';
+import { Document } from 'src/app/shared/model/Document';
 
 const fileServiceUrl = '/api/v1/fileuploaddownloader/';
 const uploadUrl = fileServiceUrl + 'uploadFile';
@@ -49,7 +50,17 @@ export class UploadService {
         } else if (event instanceof HttpResponse) {
 
           console.log("Adding success event");
+          //this.documentsService.reloadDocuments();
           this.alertService.addAlert(new Alert('success', this.alertService.getNextID(), "Document uploaded successfully"));
+          let documentFound: boolean= false;
+          this.documentsService.documents.forEach(element => {
+            if(element.name == file.name){
+              documentFound = true;
+            }
+          });
+          if(!documentFound){
+            this.documentsService.addDocument(new Document(file.name, file.name, "", this.authenticationService.getLoggedInUser().id));
+          }
           // Close the progress-stream if we get an answer form the API
           // The upload is complete
           progress.complete();
@@ -70,7 +81,7 @@ export class UploadService {
       return this.http.get<Blob>(downloadUrl + '/' + name, {responseType: 'blob' as 'json'})
       .subscribe(event => {
         if (event instanceof Blob) {
-          saveAs(event, name);       
+          saveAs(event, name);
         }
       });
 
@@ -81,7 +92,7 @@ export class UploadService {
       //   console.log(event);
       //   console.log("Event is "+ event);
       //   if (event instanceof Blob) {
-      //     saveAs(event,"test.pdf");       
+      //     saveAs(event,"test.pdf");
       //   }
       // });
   }

@@ -8,6 +8,9 @@ import { User } from 'src/app/shared/model/User';
 
 @Injectable()
 export class DocumentsService {
+  addDocument(document: Document): any {
+    this.documents.push(document);
+  }
     documents: Document[];
 
     constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
